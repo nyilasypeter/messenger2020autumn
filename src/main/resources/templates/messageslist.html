@@ -12,15 +12,20 @@
     <table class="table">
         <thead>
         <tr>
+            <td>Id</td>
             <td>Üzenet szerzője</td>
             <td>Üzenet</td>
             <td>Dátum</td>
+            <td></td>
         </tr>
         </thead>
         <tr data-th-each="msg: ${allmessages}">
+            <td data-th-text="${msg.id}"></td>
             <td data-th-text="${msg.author}"></td>
             <td data-th-text="${msg.text}"></td>
             <td data-th-text="${msg.creationTime}"></td>
+            <td><a data-th-href="@{/message/{id}(id=${msg.id})}" data-th-text="${msg.id}"></a></td>
+
         </tr>
     </table>
 

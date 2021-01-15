@@ -4,17 +4,21 @@ import java.time.LocalDateTime;
 
 public class Message {
 
+    private static int nextId = 0;
+    private Integer id;
     private String author;
     private String text;
     private LocalDateTime creationTime;
 
     public Message(String author, String text, LocalDateTime creationTime) {
+        this.id = nextId++;
         this.author = author;
         this.text = text;
         this.creationTime = creationTime;
     }
 
     public Message() {
+        this.id = nextId++;
     }
 
     public String getAuthor() {
@@ -39,5 +43,13 @@ public class Message {
 
     public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
