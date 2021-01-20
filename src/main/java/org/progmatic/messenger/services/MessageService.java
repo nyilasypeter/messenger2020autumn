@@ -29,8 +29,6 @@ public class MessageService {
     }
 
     public Message findMessageById(int messageId){
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         Optional<Message> first = messages.stream().filter(m -> m.getId() == messageId).findFirst();
         if(first.isPresent()) {
             return first.get();
