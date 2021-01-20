@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head data-th-replace="menu :: msghead"></head>
+<body>
+<nav data-th-replace="menu :: msgmenu"></nav>
+<div class="container">
+    <h2>Új üzenet létrehozása</h2>
+    <form data-th-action="@{/createmessage}" data-th-object="${msg}" method="post">
+        <div class="form-group">
+            <label for="pwd">Üzenet szövege:</label>
+            <textarea type="text" class="form-control" id="pwd" data-th-field="*{text}"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Beküld</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,29 +1,35 @@
 package org.progmatic.messenger.controllers;
 
 import org.progmatic.messenger.model.Message;
+import org.progmatic.messenger.services.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import javax.validation.Valid;
 
 @Controller
 public class MessageController {
 
-    List<Message> messages = new ArrayList<>();
+    MessageService messageService;
 
-    public MessageController() {
-        messages.add(new Message("Aladár", "helló", LocalDateTime.now()));
-        messages.add(new Message("Kriszta", "csövike", LocalDateTime.now()));
-        messages.add(new Message("MZ/X", "hl", LocalDateTime.now()));
+    ApplicationContext context;
+
+    @Autowired
+    public MessageController(MessageService messageService, ApplicationContext context) {
+        this.messageService = messageService;
+        this.context = context;
     }
+
+
 
     @GetMapping("/messages")
     public String showMessages(Model model){
-        model.addAttribute("allmessages", messages);
+        MessageService ms = context.getBean(MessageService.class);
+        model.addAttribute("allmessages", ms.getAllMessages());
         return "messageslist";
     }
 
@@ -32,11 +38,25 @@ public class MessageController {
             @PathVariable("id") int messageId,
             Model model
     ){
-        Optional<Message> first = messages.stream().filter(m -> m.getId() == messageId).findFirst();
-        if(first.isPresent()) {
-            model.addAttribute("message", first.get());
+        Message m = messageService.findMessageById(messageId);
+        if(m != null) {
+            model.addAttribute("message", m);
         }
         return "oneMessage";
+    }
+
+    @GetMapping("createmessage")
+    public String showCreateMessage(@ModelAttribute("msg") Message message, Model model){
+        return "createMessage";
+    }
+
+    @PostMapping("createmessage")
+    public String createMessage(@ModelAttribute("msg") @Valid Message message, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "createMessage";
+        }
+        messageService.addMessage(message);
+        return "redirect:/messages";
     }
 
 

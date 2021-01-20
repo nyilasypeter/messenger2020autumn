@@ -1,10 +1,7 @@
 <html>
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet"
-          href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css" />
-</head>
+<head data-th-replace="menu :: msghead"></head>
 <body>
+<nav data-th-replace="menu :: msgmenu"></nav>
 <div class="container">
     <h2>Dobókocka</h2>
     <p>Ennyi oldalú dobókockával dobtam:<span data-th-text="${sides}"></span></p>

@@ -1,13 +1,21 @@
 package org.progmatic.messenger.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class Message {
 
     private static int nextId = 0;
+
     private Integer id;
+
     private String author;
+
+    @NotBlank
+    @Size(min = 2, max = 250)
     private String text;
+
     private LocalDateTime creationTime;
 
     public Message(String author, String text, LocalDateTime creationTime) {
