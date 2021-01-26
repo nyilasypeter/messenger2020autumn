@@ -4,6 +4,7 @@ import org.progmatic.messenger.model.Message;
 import org.progmatic.messenger.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -59,12 +60,14 @@ public class MessageController {
         return "redirect:/messages";
     }
 
+    @PreAuthorize("hasAuthority('DELETE_MESSAGE')")
     @GetMapping("message/delete/{messageId}")
     public String deleteMessage(@PathVariable("messageId") int messageId){
         messageService.deleteMessage(messageId);
         return "redirect:/messages";
     }
 
+    @PreAuthorize("hasAuthority('DELETE_MESSAGE')")
     @GetMapping("message/restore/{messageId}")
     public String restoreMessage(@PathVariable("messageId") int messageId){
         messageService.restoreMessage(messageId);
