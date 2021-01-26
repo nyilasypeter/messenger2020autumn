@@ -8,6 +8,8 @@ public class Message {
 
     private static int nextId = 0;
 
+    private Boolean isDeleted = false;
+
     private Integer id;
 
     private String author;
@@ -59,5 +61,13 @@ public class Message {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

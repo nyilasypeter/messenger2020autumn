@@ -59,6 +59,18 @@ public class MessageController {
         return "redirect:/messages";
     }
 
+    @GetMapping("message/delete/{messageId}")
+    public String deleteMessage(@PathVariable("messageId") int messageId){
+        messageService.deleteMessage(messageId);
+        return "redirect:/messages";
+    }
+
+    @GetMapping("message/restore/{messageId}")
+    public String restoreMessage(@PathVariable("messageId") int messageId){
+        messageService.restoreMessage(messageId);
+        return "redirect:/messages";
+    }
+
 
 
 }

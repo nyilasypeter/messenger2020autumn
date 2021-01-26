@@ -1,5 +1,6 @@
 package org.progmatic.messenger.services;
 
+import org.progmatic.messenger.helpers.SecHelper;
 import org.progmatic.messenger.model.Message;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -25,11 +27,22 @@ public class MessageService {
     }
 
     public List<Message> getAllMessages(){
-        return messages;
+        if(SecHelper.hasAuthority("DELETE_MESSAGE")) {
+            return messages;
+        }
+        else{
+            return messages.stream().filter(m -> !m.getDeleted()).collect(Collectors.toList());
+        }
     }
 
     public Message findMessageById(int messageId){
-        Optional<Message> first = messages.stream().filter(m -> m.getId() == messageId).findFirst();
+        Optional<Message> first;
+        if(!SecHelper.hasAuthority("DELETE_MESSAGE")){
+            first = messages.stream().filter(m -> !m.getDeleted() && m.getId() == messageId).findFirst();
+        }
+        else{
+            first = messages.stream().filter(m -> m.getId() == messageId).findFirst();
+        }
         if(first.isPresent()) {
             return first.get();
         }
@@ -40,5 +53,19 @@ public class MessageService {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         msg.setAuthor(user.getUsername());
         messages.add(msg);
+    }
+
+    public void deleteMessage(int messageId){
+        Message msg = findMessageById(messageId);
+        if(msg != null){
+            msg.setDeleted(true);
+        }
+    }
+
+    public void restoreMessage(int messageId){
+        Message msg = findMessageById(messageId);
+        if(msg != null){
+            msg.setDeleted(false);
+        }
     }
 }
