@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Controller
 public class MessageController {
@@ -56,6 +57,7 @@ public class MessageController {
         if(bindingResult.hasErrors()){
             return "createMessage";
         }
+        message.setCreationTime(LocalDateTime.now());
         messageService.addMessage(message);
         return "redirect:/messages";
     }

@@ -1,5 +1,6 @@
 package org.progmatic.messenger.model;
 
+import org.progmatic.messenger.helpers.DateHelper;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,7 +32,7 @@ public class User implements UserDetails {
     @NotBlank
     private String email;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = DateHelper.DATE_FORMAT)
     private LocalDate dateOfBirth;
 
 

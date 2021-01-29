@@ -1,5 +1,8 @@
 package org.progmatic.messenger.model;
 
+import org.progmatic.messenger.helpers.DateHelper;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -18,6 +21,7 @@ public class Message {
     @Size(min = 2, max = 250)
     private String text;
 
+    @DateTimeFormat(pattern = DateHelper.DATE_TIME_FORMAT)
     private LocalDateTime creationTime;
 
     public Message(String author, String text, LocalDateTime creationTime) {
