@@ -29,7 +29,8 @@
                     <span >Üdv </span><span data-sec-authentication="name"></span><span >!</span>
                 </span>
 
-        <a  data-sec-authorize="isAuthenticated()" class="" href="/logout">Kijelentkezés</a>
+            <form data-sec-authorize="isAuthenticated()" style="display: none" data-th-action="@{/logout}" method="post" id="logoutform"></form>
+            <a data-sec-authorize="isAuthenticated()" class="" href="#" onclick="document.getElementById('logoutform').submit(); return false;">Kijelentkezés</a>
         <a  data-sec-authorize="! isAuthenticated()" class="" href="/login">Bejelentkezés</a>
     </div>
 </nav>
