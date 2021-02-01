@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,13 +15,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class User implements UserDetails {
-
-
-    private long id;
+@Entity
+public class User extends BaseEntity implements UserDetails {
 
     @NotBlank
     @NotNull
+    @Column(unique = true)
     private String username;
 
     @NotBlank
@@ -35,8 +35,11 @@ public class User implements UserDetails {
     @DateTimeFormat(pattern = DateHelper.DATE_FORMAT)
     private LocalDate dateOfBirth;
 
-
+    @ManyToMany
     private Set<Authority> authorities = new HashSet<>();
+
+    @OneToMany(mappedBy = "author")
+    private Set<Message> messages = new HashSet<>();
 
     public User() {
     }
@@ -51,14 +54,6 @@ public class User implements UserDetails {
         this.password = password;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setUsername(String username) {
@@ -87,6 +82,14 @@ public class User implements UserDetails {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 
     @Override

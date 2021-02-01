@@ -3,6 +3,7 @@ package org.progmatic.messenger.controllers;
 
 import org.progmatic.messenger.model.Authority;
 import org.progmatic.messenger.model.User;
+import org.progmatic.messenger.services.MyUserDeatailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,14 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-    private InMemoryUserDetailsManager userService;
+    private MyUserDeatailsService userService;
 
     @Autowired
-    public UserController(UserDetailsService userService) {
-        this.userService = (InMemoryUserDetailsManager) userService;
+    public UserController(MyUserDeatailsService userService) {
+        this.userService = userService;
     }
+
+
 
     @GetMapping("/register")
     public String showRegister(Model model) {
@@ -48,7 +51,6 @@ public class UserController {
             bindingResult.rejectValue("username", "username.exists", "Username is already taken!");
             return "register";
         }
-        user.addAuthority(new Authority("USER"));
         userService.createUser(user);
         LOGGER.debug("register method: user created");
         return "redirect:/login";

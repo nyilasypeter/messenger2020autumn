@@ -37,7 +37,7 @@ public class MessageController {
 
     @GetMapping("/message/{id}")
     public String showOneMessages(
-            @PathVariable("id") int messageId,
+            @PathVariable("id") Long messageId,
             Model model
     ){
         Message m = messageService.findMessageById(messageId);

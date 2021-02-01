@@ -5,7 +5,7 @@
 <nav data-th-replace="menu :: msgmenu"></nav>
 <div class="container">
     <div class="card">
-        <div class="card-header" data-th-text="${message.author}">Header</div>
+        <div class="card-header" data-th-text="${message.author.username}">Header</div>
         <div class="card-body" data-th-text="${message.text}">Content</div>
         <div class="card-footer" data-th-text="${message.creationTime}">Footer</div>
     </div>

@@ -2,69 +2,68 @@ package org.progmatic.messenger.services;
 
 import org.progmatic.messenger.helpers.SecHelper;
 import org.progmatic.messenger.model.Message;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.progmatic.messenger.model.User;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
 
-    List<Message> messages = Collections.synchronizedList(new ArrayList<>());
+    @PersistenceContext
+    EntityManager em;
 
-    public MessageService() {
-        messages.add(new Message("Aladár", "helló", LocalDateTime.now()));
-        messages.add(new Message("Kriszta", "csövike", LocalDateTime.now()));
-        messages.add(new Message("MZ/X", "hl", LocalDateTime.now()));
-    }
 
     public List<Message> getAllMessages(){
         if(SecHelper.hasAuthority("DELETE_MESSAGE")) {
-            return messages;
+            return em.createQuery("select m from Message m ", Message.class).getResultList();
         }
         else{
-            return messages.stream().filter(m -> !m.getDeleted()).collect(Collectors.toList());
+            return em.createQuery("select m from Message m where m.isDeleted = false", Message.class).getResultList();
         }
     }
 
-    public Message findMessageById(int messageId){
+    public Message findMessageById(Long messageId){
         Optional<Message> first;
         if(!SecHelper.hasAuthority("DELETE_MESSAGE")){
-            first = messages.stream().filter(m -> !m.getDeleted() && m.getId() == messageId).findFirst();
+            return em.find(Message.class, messageId);
         }
         else{
-            first = messages.stream().filter(m -> m.getId() == messageId).findFirst();
+            try {
+                return em.createQuery("select m from Message m where m.isDeleted = false and m.id = :id", Message.class)
+                        .setParameter("id", messageId)
+                        .getSingleResult();
+            }
+            catch (NoResultException ex){
+                return null;
+            }
         }
-        if(first.isPresent()) {
-            return first.get();
-        }
-        return null;
     }
 
+    @Transactional
     public void addMessage(Message msg){
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        msg.setAuthor(user.getUsername());
-        messages.add(msg);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        msg.setAuthor(user);
+        em.persist(msg);
     }
 
+    @Transactional
     public void deleteMessage(int messageId){
-        Message msg = findMessageById(messageId);
+        Message msg = em.find(Message.class, messageId);
         if(msg != null){
             msg.setDeleted(true);
         }
     }
 
+    @Transactional
     public void restoreMessage(int messageId){
-        Message msg = findMessageById(messageId);
+        Message msg = em.find(Message.class, messageId);
         if(msg != null){
             msg.setDeleted(false);
         }

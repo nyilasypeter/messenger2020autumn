@@ -2,14 +2,18 @@ package org.progmatic.messenger.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Authority implements GrantedAuthority {
-    private long id;
+@Entity
+public class Authority extends BaseEntity implements GrantedAuthority {
+
 
     private String name;
 
+    @ManyToMany(mappedBy = "authorities")
     private Set<User> users = new HashSet<>();
 
     public Authority() {
@@ -17,14 +21,6 @@ public class Authority implements GrantedAuthority {
 
     public Authority(String name) {
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

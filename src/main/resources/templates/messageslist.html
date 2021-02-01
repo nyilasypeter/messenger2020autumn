@@ -18,7 +18,7 @@
         </thead>
         <tr data-th-each="msg: ${allmessages}" data-th-classappend="${msg.deleted ? 'text-muted' : ''}">
             <td data-th-text="${msg.id}"></td>
-            <td data-th-text="${msg.author}"></td>
+            <td data-th-text="${msg.author.username}"></td>
             <td data-th-text="${msg.text}"></td>
             <td data-th-text="${{msg.creationTime}}"></td>
             <span data-sec-authorize="hasAuthority('DELETE_MESSAGE')">
