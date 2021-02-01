@@ -22,8 +22,15 @@
             <td data-th-text="${msg.text}"></td>
             <td data-th-text="${{msg.creationTime}}"></td>
             <span data-sec-authorize="hasAuthority('DELETE_MESSAGE')">
-                <td data-th-if="${msg.deleted}">Igen <a data-th-href="@{/message/restore/{id}(id=${msg.id})}">(Visszaállít)</a></td>
-                <td data-th-if="${! msg.deleted}">Nem <a data-th-href="@{/message/delete/{id}(id=${msg.id})}">(Töröl)</a></td>
+
+                <td data-th-if="${msg.deleted}">Igen
+                    <form method="post" data-th-action="@{/message/restore/{id}(id=${msg.id})}" id="restoreForm" style="display: none"></form>
+                    <a href="#" onclick="document.getElementById('restoreForm').submit(); return false;">(Visszaállít)</a>
+                </td>
+                <td data-th-if="${!msg.deleted}">Igen
+                    <form method="post" data-th-action="@{/message/delete/{id}(id=${msg.id})}" id="deleteForm" style="display: none"></form>
+                    <a href="#" onclick="document.getElementById('deleteForm').submit(); return false;">(Töröl)</a>
+                </td>
             </span>
 
             <td><a data-th-href="@{/message/{id}(id=${msg.id})}" data-th-text="${msg.id}"></a></td>

@@ -63,15 +63,15 @@ public class MessageController {
     }
 
     @PreAuthorize("hasAuthority('DELETE_MESSAGE')")
-    @GetMapping("message/delete/{messageId}")
-    public String deleteMessage(@PathVariable("messageId") int messageId){
+    @PostMapping("message/delete/{messageId}")
+    public String deleteMessage(@PathVariable("messageId") Long messageId){
         messageService.deleteMessage(messageId);
         return "redirect:/messages";
     }
 
     @PreAuthorize("hasAuthority('DELETE_MESSAGE')")
-    @GetMapping("message/restore/{messageId}")
-    public String restoreMessage(@PathVariable("messageId") int messageId){
+    @PostMapping("message/restore/{messageId}")
+    public String restoreMessage(@PathVariable("messageId") Long messageId){
         messageService.restoreMessage(messageId);
         return "redirect:/messages";
     }

@@ -54,7 +54,7 @@ public class MessageService {
     }
 
     @Transactional
-    public void deleteMessage(int messageId){
+    public void deleteMessage(Long messageId){
         Message msg = em.find(Message.class, messageId);
         if(msg != null){
             msg.setDeleted(true);
@@ -62,7 +62,7 @@ public class MessageService {
     }
 
     @Transactional
-    public void restoreMessage(int messageId){
+    public void restoreMessage(Long messageId){
         Message msg = em.find(Message.class, messageId);
         if(msg != null){
             msg.setDeleted(false);

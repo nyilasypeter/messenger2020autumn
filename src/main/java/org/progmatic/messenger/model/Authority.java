@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 public class Authority extends BaseEntity implements GrantedAuthority {
 
+    public static final String AUTH_DELETE_MESSAGE = "DELETE_MESSAGE";
 
     private String name;
 
