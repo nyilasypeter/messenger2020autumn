@@ -24,12 +24,12 @@
             <span data-sec-authorize="hasAuthority('DELETE_MESSAGE')">
 
                 <td data-th-if="${msg.deleted}">Igen
-                    <form method="post" data-th-action="@{/message/restore/{id}(id=${msg.id})}" id="restoreForm" style="display: none"></form>
-                    <a href="#" onclick="document.getElementById('restoreForm').submit(); return false;">(Visszaállít)</a>
+                    <form method="post" data-th-action="@{/message/restore/{id}(id=${msg.id})}"  style="display: none"></form>
+                    <a href="#" onclick="this.parentNode.querySelector('form').submit(); return false;">(Visszaállít)</a>
                 </td>
                 <td data-th-if="${!msg.deleted}">Nem
-                    <form method="post" data-th-action="@{/message/delete/{id}(id=${msg.id})}" id="deleteForm" style="display: none"></form>
-                    <a href="#" onclick="document.getElementById('deleteForm').submit(); return false;">(Töröl)</a>
+                    <form method="post" data-th-action="@{/message/delete/{id}(id=${msg.id})}"  style="display: none"></form>
+                    <a href="#" onclick="this.parentNode.querySelector('form').submit(); return false;">(Töröl)</a>
                 </td>
             </span>
 
