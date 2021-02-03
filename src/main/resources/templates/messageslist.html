@@ -27,7 +27,7 @@
                     <form method="post" data-th-action="@{/message/restore/{id}(id=${msg.id})}" id="restoreForm" style="display: none"></form>
                     <a href="#" onclick="document.getElementById('restoreForm').submit(); return false;">(Visszaállít)</a>
                 </td>
-                <td data-th-if="${!msg.deleted}">Igen
+                <td data-th-if="${!msg.deleted}">Nem
                     <form method="post" data-th-action="@{/message/delete/{id}(id=${msg.id})}" id="deleteForm" style="display: none"></form>
                     <a href="#" onclick="document.getElementById('deleteForm').submit(); return false;">(Töröl)</a>
                 </td>
