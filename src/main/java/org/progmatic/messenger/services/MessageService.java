@@ -29,14 +29,15 @@ public class MessageService {
         }
     }
 
-    public Message findMessageById(Long messageId){
-        Optional<Message> first;
+    @Transactional
+    public Message findMessageById(Long messageId, Integer sleep){
+        Message msg;
         if(!SecHelper.hasAuthority("DELETE_MESSAGE")){
-            return em.find(Message.class, messageId);
+            msg =  em.find(Message.class, messageId);
         }
         else{
             try {
-                return em.createQuery("select m from Message m where m.isDeleted = false and m.id = :id", Message.class)
+                msg = em.createQuery("select m from Message m where m.isDeleted = false and m.id = :id", Message.class)
                         .setParameter("id", messageId)
                         .getSingleResult();
             }
@@ -44,6 +45,13 @@ public class MessageService {
                 return null;
             }
         }
+        try {
+            Thread.sleep(1000*sleep);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return msg;
+
     }
 
     @Transactional
@@ -67,5 +75,16 @@ public class MessageService {
         if(msg != null){
             msg.setDeleted(false);
         }
+    }
+
+    @Transactional
+    public void appendTextToMessage(Long messageId, String newText, Integer sleep){
+        Message msg = em.find(Message.class, messageId);
+        try {
+            Thread.sleep(1000*sleep);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        msg.setText(newText);
     }
 }

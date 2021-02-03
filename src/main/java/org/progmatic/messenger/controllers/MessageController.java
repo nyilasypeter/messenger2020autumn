@@ -38,9 +38,10 @@ public class MessageController {
     @GetMapping("/message/{id}")
     public String showOneMessages(
             @PathVariable("id") Long messageId,
+            @RequestParam("sleep") Integer sleep,
             Model model
     ){
-        Message m = messageService.findMessageById(messageId);
+        Message m = messageService.findMessageById(messageId, sleep);
         if(m != null) {
             model.addAttribute("message", m);
         }
@@ -73,6 +74,16 @@ public class MessageController {
     @PostMapping("message/restore/{messageId}")
     public String restoreMessage(@PathVariable("messageId") Long messageId){
         messageService.restoreMessage(messageId);
+        return "redirect:/messages";
+    }
+
+    @GetMapping("/appendTextToMsg")
+    public String appendTextToMsg(
+            @RequestParam("id") Long id,
+            @RequestParam("text") String text,
+            @RequestParam("sleep") Integer sleep
+    ){
+        messageService.appendTextToMessage(id, text, sleep);
         return "redirect:/messages";
     }
 
