@@ -16,6 +16,7 @@ async function delRestore(msgId){
     if(shouldDelete){
         url = '/message/delete/' + msgId;
     }
+    //Send http POST request from javascript
     let response = await fetch(url,  {
         method: 'POST',
         headers: {
@@ -23,8 +24,8 @@ async function delRestore(msgId){
         },
     });
     let result = await response.json();
+    //Response arrived, let's modify the row from deleted to undeleted or vice versa
     let tr = document.getElementById('row_' + msgId);
-    debugger
     if(shouldDelete){
         tr.classList.add('text-muted');
         a.classList.remove('delLink');
