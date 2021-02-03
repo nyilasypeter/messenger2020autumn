@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head data-th-replace="menu :: msghead"></head>
-<body>
+<head data-th-fragment="msghead">
+    <meta charset="UTF-8"/>
+    <link type="text/css" href="/webjars/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous"/>
+    <script src="/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="/webjars/popper.js/1.14.3/popper.min.js"></script>
+    <script src="/webjars/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="/js/messagelist.js"></script>
+
+</head><body>
 <nav data-th-replace="menu :: msgmenu"></nav>
 <div class="container">
     <h2>Üzenetek</h2>
@@ -16,20 +24,20 @@
             <td></td>
         </tr>
         </thead>
-        <tr data-th-each="msg: ${allmessages}" data-th-classappend="${msg.deleted ? 'text-muted' : ''}">
+        <tr data-th-id="${'row_' + msg.id}"  data-th-each="msg: ${allmessages}" data-th-classappend="${msg.deleted ? 'text-muted' : ''}">
             <td data-th-text="${msg.id}"></td>
             <td data-th-text="${msg.author.username}"></td>
             <td data-th-text="${msg.text}"></td>
             <td data-th-text="${{msg.creationTime}}"></td>
             <span data-sec-authorize="hasAuthority('DELETE_MESSAGE')">
 
-                <td data-th-if="${msg.deleted}">Igen
-                    <form method="post" data-th-action="@{/message/restore/{id}(id=${msg.id})}" id="restoreForm" style="display: none"></form>
-                    <a href="#" onclick="document.getElementById('restoreForm').submit(); return false;">(Visszaállít)</a>
+                <td data-th-if="${msg.deleted}">
+                    <span>Igen</span>
+                    <a data-th-id="${msg.id}" class="restoreLink delrestore" href="#" >(Visszaállít)</a>
                 </td>
-                <td data-th-if="${!msg.deleted}">Igen
-                    <form method="post" data-th-action="@{/message/delete/{id}(id=${msg.id})}" id="deleteForm" style="display: none"></form>
-                    <a href="#" onclick="document.getElementById('deleteForm').submit(); return false;">(Töröl)</a>
+                <td data-th-if="${!msg.deleted}">
+                    <span>Nem</span>
+                    <a data-th-id="${msg.id}" class="delLink delrestore" href="#">(Töröl)</a>
                 </td>
             </span>
 
@@ -37,6 +45,9 @@
 
         </tr>
     </table>
+    <form method="post" data-th-action="@{/ize}" data-th-id="csrf_form" style="display: none"></form>
+
+
 
 </div>
 </body>
