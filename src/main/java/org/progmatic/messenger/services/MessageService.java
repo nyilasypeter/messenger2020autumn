@@ -1,5 +1,6 @@
 package org.progmatic.messenger.services;
 
+import org.progmatic.messenger.dtos.MessageDeleteResultDTO;
 import org.progmatic.messenger.helpers.SecHelper;
 import org.progmatic.messenger.model.Message;
 import org.progmatic.messenger.model.User;
@@ -62,19 +63,27 @@ public class MessageService {
     }
 
     @Transactional
-    public void deleteMessage(Long messageId){
+    public MessageDeleteResultDTO deleteMessage(Long messageId){
+        MessageDeleteResultDTO res =  new MessageDeleteResultDTO();
+        res.setMsgId(messageId);
         Message msg = em.find(Message.class, messageId);
         if(msg != null){
             msg.setDeleted(true);
+            res.setSuccessFullyDeleted(true);
         }
+        return res;
     }
 
     @Transactional
-    public void restoreMessage(Long messageId){
+    public MessageDeleteResultDTO restoreMessage(Long messageId){
+        MessageDeleteResultDTO res =  new MessageDeleteResultDTO();
+        res.setMsgId(messageId);
         Message msg = em.find(Message.class, messageId);
         if(msg != null){
             msg.setDeleted(false);
+            res.setSuccessFullyRestored(true);
         }
+        return res;
     }
 
     @Transactional

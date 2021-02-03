@@ -20,20 +20,12 @@ public class AjaxMessageController {
     @PreAuthorize("hasAuthority('DELETE_MESSAGE')")
     @PostMapping("message/restore/{messageId}")
     public MessageDeleteResultDTO restoreMessage(@PathVariable("messageId") Long messageId){
-        messageService.restoreMessage(messageId);
-        MessageDeleteResultDTO res =  new MessageDeleteResultDTO();
-        res.setMsgId(messageId);
-        res.setSuccessFullyRestored(true);
-        return res;
+        return messageService.restoreMessage(messageId);
     }
 
     @PreAuthorize("hasAuthority('DELETE_MESSAGE')")
     @PostMapping("message/delete/{messageId}")
     public MessageDeleteResultDTO deleteMessage(@PathVariable("messageId") Long messageId){
-        messageService.deleteMessage(messageId);
-        MessageDeleteResultDTO res =  new MessageDeleteResultDTO();
-        res.setMsgId(messageId);
-        res.setSuccessFullyDeleted(true);
-        return res;
+        return messageService.deleteMessage(messageId);
     }
 }
