@@ -34,7 +34,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/messages", "/", "/home", "/webjars/**", "/js/**","/css/**", "/register").permitAll()
+                .antMatchers("/messages", "/", "/home", "/webjars/**", "/js/**","/css/**", "/register", "/rest/csrf").permitAll()
                 .anyRequest().authenticated();
     }
 }

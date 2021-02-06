@@ -56,10 +56,11 @@ public class MessageService {
     }
 
     @Transactional
-    public void addMessage(Message msg){
+    public Message addMessage(Message msg){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         msg.setAuthor(user);
         em.persist(msg);
+        return msg;
     }
 
     @Transactional

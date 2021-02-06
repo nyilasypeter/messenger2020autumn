@@ -12,16 +12,18 @@ async function delRestore(msgId){
     let shouldDelete = a.classList.contains('delLink');
     let form = document.getElementById("csrf_form");
     let csrfVal = form.getElementsByTagName('input')[0].value;
-    let url = '/message/restore/' + msgId;
+    let body = shouldDelete ? {'action': "DELETE"} : {'action' : 'RESTORE'};
     if(shouldDelete){
         url = '/message/delete/' + msgId;
     }
     //Send http POST request from javascript
-    let response = await fetch(url,  {
-        method: 'POST',
+    let response = await fetch('/rest/messages/' + msgId,  {
+        method: 'Put',
         headers: {
-            'X-CSRF-TOKEN': csrfVal
+            'X-CSRF-TOKEN': csrfVal,
+            'Content-Type': 'application/json;charset=utf-8'
         },
+        body: JSON.stringify(body)
     });
     let result = await response.json();
     //Response arrived, let's modify the row from deleted to undeleted or vice versa
